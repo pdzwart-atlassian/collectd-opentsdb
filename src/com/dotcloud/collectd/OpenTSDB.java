@@ -122,9 +122,9 @@ public class OpenTSDB implements CollectdWriteInterface, CollectdInitInterface,
 
     @Override
     public int write(ValueList vl) {
-        List<DataSource> ds = vl.getDataSet().getDataSources();
-        List<Number> values = vl.getValues();
-        int size = values.size();
+        final List<DataSource> ds = vl.getDataSet().getDataSources();
+        final List<Number> values = vl.getValues();
+        final int size = values.size();
 
         final String plugin = vl.getPlugin();
         final String type = vl.getType();
