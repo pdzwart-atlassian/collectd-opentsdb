@@ -165,15 +165,16 @@ public class OpenTSDB implements CollectdWriteInterface, CollectdInitInterface,
             }
 
             final Number val = values.get(i);
-            final String val_s = val.toString();
 
-            if (val_s.indexOf('.') == -1)
-                this.tsdb.addPoint(metric, time, val.intValue(), tags)
-                        .addErrback(err);
-            else
+            if (val instanceof Float || val instanceof Long) {
                 this.tsdb.addPoint(metric, time, val.floatValue(), tags)
                         .addErrback(err);
 
+            } else {
+                this.tsdb.addPoint(metric, time, val.longValue(), tags)
+                        .addErrback(err);
+
+            }
         }
 
         return 0;
