@@ -1,0 +1,16 @@
+This is a collectd plugin which insert data into OpenTSDB (http://opentsdb.net/) using the API.
+Using the telnet RPC protocol is too slow when a certain amount of data is sent and collectd got killed (or OOM-ed).
+
+Here is an example of the plugin configuration:
+
+    <Plugin "java">
+            JVMArg "-verbose:jni"
+            JVMArg "-Djava.class.path=/usr/share/collectd/java/collectd-api.jar:/var/lib/dotcloud/opentsdb/build/tsdb-1.0.jar:/var/lib/dotcloud/opentsdb/build/third_party/hbase/hbaseasync-1.0.jar:/var/lib/dotcloud/opentsdb/build/third_party/suasync/suasync-1.0.jar:/var/lib/dotcloud/opentsdb/build/third_party/slf4j/jcl-over-slf4j-1.6.1.jar:/var/lib/dotcloud/opentsdb/build/third_party/slf4j/log4j-over-slf4j-1.6.1.jar:/var/lib/dotcloud/opentsdb/build/third_party/slf4j/slf4j-api-1.6.1.jar:/var/lib/dotcloud/opentsdb/build/third_party/netty/netty-3.2.3.Final.jar:/var/lib/dotcloud/opentsdb/build/third_party/zookeeper/zookeeper-3.3.1.jar:/var/lib/dotcloud/collectd-plugin/"
+    
+            LoadPlugin "com.dotcloud.collectd.OpenTSDB"
+            <Plugin "OpenTSDB">
+              Quorum "zookeep-host-1"
+              TimeSeries "tsdb"
+              UidTable "tsdb-uid"
+            </Plugin>
+    </Plugin>
