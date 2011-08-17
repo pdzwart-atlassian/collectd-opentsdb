@@ -166,14 +166,13 @@ public class OpenTSDB implements CollectdWriteInterface, CollectdInitInterface,
 
             final Number val = values.get(i);
 
-            if (val instanceof Float || val instanceof Long) {
-                this.tsdb.addPoint(metric, time, val.floatValue(), tags)
-                        .addErrback(err);
+            if (val instanceof Long) {
+                tsdb.addPoint(metric, time, val.longValue(), tags)
+                    .addErrback(err);
 
             } else {
-                this.tsdb.addPoint(metric, time, val.longValue(), tags)
-                        .addErrback(err);
-
+                tsdb.addPoint(metric, time, val.floatValue(), tags)
+                    .addErrback(err);
             }
         }
 
