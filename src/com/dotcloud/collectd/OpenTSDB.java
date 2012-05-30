@@ -151,7 +151,7 @@ public class OpenTSDB implements CollectdWriteInterface, CollectdInitInterface,
 
         final String host = vl.getHost();
 
-        tags.put("host", vl.getHost());
+        tags.put("host", host);
 
         final String metric = plugin + "." + type;
         final long time = vl.getTime() / 1000;
