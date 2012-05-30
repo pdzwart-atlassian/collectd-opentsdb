@@ -36,8 +36,6 @@ public class OpenTSDB implements CollectdWriteInterface, CollectdInitInterface,
     private TSDB tsdb = null;
     private String quorum = "localhost";
     private String timeseries_table = "tsdb", uniqueids_table = "tsdb-uid";
-    private final Map<String, String> tags = new HashMap<String, String>(
-            net.opentsdb.core.Const.MAX_NUM_TAGS);
 
     public OpenTSDB() {
         Collectd.logDebug("OpenTSDB Collectd plugin instancied");
@@ -128,6 +126,7 @@ public class OpenTSDB implements CollectdWriteInterface, CollectdInitInterface,
 
         final String plugin = vl.getPlugin();
         final String type = vl.getType();
+        final Map<String, String> tags = new HashMap<String, String>(net.opentsdb.core.Const.MAX_NUM_TAGS);
 
         if (plugin == null || plugin.isEmpty()) {
             Collectd.logError("plugin value is needed");
@@ -142,8 +141,6 @@ public class OpenTSDB implements CollectdWriteInterface, CollectdInitInterface,
         final String pluginInstance = vl.getPluginInstance();
         final String typeInstance = vl.getTypeInstance();
 
-        tags.clear();
-
         if (pluginInstance != null && !pluginInstance.isEmpty()) {
             tags.put("plugin_instance", pluginInstance);
         }
@@ -151,6 +148,8 @@ public class OpenTSDB implements CollectdWriteInterface, CollectdInitInterface,
         if (typeInstance != null && !typeInstance.isEmpty()) {
             tags.put("type_instance", typeInstance);
         }
+
+        final String host = vl.getHost();
 
         tags.put("host", vl.getHost());
 
@@ -165,6 +164,8 @@ public class OpenTSDB implements CollectdWriteInterface, CollectdInitInterface,
             }
 
             final Number val = values.get(i);
+
+            Collectd.logDebug(plugin + ' ' + type + ' ' + pluginInstance + ' ' + typeInstance + ' ' + ' ' + host + ' ' + metric + ' ' + time + ' ' + pointName + ' ' + val);
 
             if (val instanceof Long) {
                 tsdb.addPoint(metric, time, val.longValue(), tags)
